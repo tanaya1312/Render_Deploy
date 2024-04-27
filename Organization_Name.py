@@ -3,7 +3,6 @@ import psycopg2
 
 app = Flask(__name__)
 
-# Function to connect to PostgreSQL database
 def connect_to_db():
     conn = psycopg2.connect(
         dbname="flaskdeployment",
@@ -15,7 +14,6 @@ def connect_to_db():
     return conn
 
 
-# Route to get list of organization names
 @app.route('/organization_names', methods=['GET'])
 def get_organization_names():
     try:
