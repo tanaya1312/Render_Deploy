@@ -18,7 +18,7 @@ def connect_to_db():
 
 
 # Route to get list of organizations
-@app.route('/get', methods=['GET'])
+@app.route('/organizations', methods=['GET'])
 def get_organizations():
     try:
         # Connect to the database
