@@ -3,7 +3,6 @@ import psycopg2
 
 app = Flask(__name__)
 
-# postgres://tanaya:qi3gRlLlJduD0REQurSeu72uJfpGkka4@dpg-colrd88l5elc73bo6rag-a.singapore-postgres.render.com/flaskdeployment
 
 # Function to connect to PostgreSQL database
 def connect_to_db():
