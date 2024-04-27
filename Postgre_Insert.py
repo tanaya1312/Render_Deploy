@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 
 class Organization:
-    def _init_(self, data):
+    def __init__(self, data):
         self.id = data.get('id')
         self.name = data.get('Name')
         self.type = data.get('OrganizationType')
