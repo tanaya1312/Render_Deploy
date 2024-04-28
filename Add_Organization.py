@@ -16,43 +16,59 @@ def connect_to_db():
     return conn
 
 
-# Route to add a new organization
-@app.route('/add_organization', methods=['POST'])
+def check_organization_exists(org_id):
+    conn = connect_to_db()
+    cur = conn.cursor()
+    cur.execute("SELECT COUNT(*) FROM Organization WHERE Organization_Id = %s", (org_id,))
+    count = cur.fetchone()[0]
+    cur.close()
+    conn.close()
+    return count > 0
+
+
+@app.route('/add_organization')
 def add_organization():
     try:
         # Read data from data.json file
         with open('data.json', 'r') as f:
             data = json.load(f)
 
-        # Extract organization data
-        org_id = data.get('id')
-        org_name = data.get('Name')
-        org_type = data.get('OrganizationType')
-        created_by = data.get('CreatedBy')
-        creation_date = data.get('CreationDate')
-        updated_on = data.get('UpdatedOn')
-        updated_by = data.get('UpdatedBy')
+        added_count = 0
 
-        # Connect to the database
-        conn = connect_to_db()
+        for org_data in data:
+            # Extract organization data
+            org_id = org_data.get('id')
+            org_name = org_data.get('Name')
+            org_type = org_data.get('OrganizationType')
+            created_by = org_data.get('CreatedBy')
+            creation_date = org_data.get('CreationDate')
+            updated_on = org_data.get('UpdatedOn')
+            updated_by = org_data.get('UpdatedBy')
 
-        # Create a cursor
-        cur = conn.cursor()
+            # Check if organization already exists
+            if not check_organization_exists(org_id):
+                # Connect to the database
+                conn = connect_to_db()
 
-        # Execute the insertion query
-        cur.execute("""
-            INSERT INTO Organization (Organization_Id, Organization_Name, Organization_Type, Created_by, Creation_Date, Updated_On, Updated_by)
-            VALUES (%s, %s, %s, %s, %s, %s, %s)
-        """, (org_id, org_name, org_type, created_by, creation_date, updated_on, updated_by))
+                # Create a cursor
+                cur = conn.cursor()
 
-        # Commit the transaction
-        conn.commit()
+                # Execute the insertion query
+                cur.execute("""
+                    INSERT INTO Organization (Organization_Id, Organization_Name, Organization_Type, Created_by, Creation_Date, Updated_On, Updated_by)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s)
+                """, (org_id, org_name, org_type, created_by, creation_date, updated_on, updated_by))
 
-        # Close cursor and connection
-        cur.close()
-        conn.close()
+                # Commit the transaction
+                conn.commit()
 
-        return jsonify({'message': 'Organization added successfully'})
+                # Close cursor and connection
+                cur.close()
+                conn.close()
+
+                added_count += 1
+
+        return jsonify({'message': f'{added_count} organizations added successfully'})
 
     except Exception as e:
         return jsonify({'error': str(e)})
