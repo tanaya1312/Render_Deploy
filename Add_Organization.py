@@ -29,14 +29,12 @@ def check_organization_exists(org_id):
 @app.route('/add_organization')
 def add_organization():
     try:
-        # Read data from data.json file
         with open('data.json', 'r') as f:
             data = json.load(f)
 
         added_count = 0
 
         for org_data in data:
-            # Extract organization data
             org_id = org_data.get('id')
             org_name = org_data.get('Name')
             org_type = org_data.get('OrganizationType')
@@ -45,24 +43,17 @@ def add_organization():
             updated_on = org_data.get('UpdatedOn')
             updated_by = org_data.get('UpdatedBy')
 
-            # Check if organization already exists
             if not check_organization_exists(org_id):
-                # Connect to the database
                 conn = connect_to_db()
-
-                # Create a cursor
                 cur = conn.cursor()
 
-                # Execute the insertion query
                 cur.execute("""
                     INSERT INTO Organization (Organization_Id, Organization_Name, Organization_Type, Created_by, Creation_Date, Updated_On, Updated_by)
                     VALUES (%s, %s, %s, %s, %s, %s, %s)
                 """, (org_id, org_name, org_type, created_by, creation_date, updated_on, updated_by))
 
-                # Commit the transaction
                 conn.commit()
 
-                # Close cursor and connection
                 cur.close()
                 conn.close()
 

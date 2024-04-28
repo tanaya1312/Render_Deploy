@@ -3,6 +3,7 @@ import psycopg2
 
 app = Flask(__name__)
 
+
 def connect_to_db():
     conn = psycopg2.connect(
         dbname="flaskdeployment",
@@ -17,26 +18,19 @@ def connect_to_db():
 @app.route('/organization_names', methods=['GET'])
 def get_organization_names():
     try:
-        # Connect to the database
         conn = connect_to_db()
 
-        # Create a cursor
         cur = conn.cursor()
 
-        # Execute the query to fetch organization names
         cur.execute("SELECT Organization_Name FROM Organization")
 
-        # Fetch all organization names
         organization_names = cur.fetchall()
 
-        # Close cursor and connection
         cur.close()
         conn.close()
 
-        # Extract organization names from the result
         organization_names_list = [name[0] for name in organization_names]
 
-        # Return the organization names as JSON response
         return jsonify({'organization_names': organization_names_list})
 
     except Exception as e:

@@ -16,19 +16,14 @@ class OrganizationService:
 
     def get_organizations(self):
         try:
-            # Create a cursor
             cur = self.conn.cursor()
 
-            # Execute the query to fetch organizations
             cur.execute("SELECT * FROM Organization")
 
-            # Fetch all organizations
             organizations = cur.fetchall()
 
-            # Close cursor
             cur.close()
 
-            # Convert the organizations to a list of dictionaries
             organizations_list = []
             for org in organizations:
                 organizations_list.append({
@@ -53,7 +48,6 @@ class OrganizationService:
 organization_service = OrganizationService()
 
 
-# Route to get list of organizations
 @app.route('/organizations', methods=['GET'])
 def get_organizations():
     organizations = organization_service.get_organizations()

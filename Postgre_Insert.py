@@ -105,5 +105,5 @@ def load_data():
         return jsonify({'error': {'category': 'Runtime Error', 'type': 'internal_error', 'message': error_message}})
 
 
-if __name__== '_main_':
+if __name__ == '__main__':
     app.run(debug=True)
