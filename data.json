@@ -313,5 +313,14 @@
       "CreationDate": "03/29/2024",
       "UpdatedOn": "03/30/2024",
       "UpdatedBy": "Mahira"
+    },
+    {
+      "id": "36",
+      "Name": "Karan",
+      "OrganizationType": "It",
+      "CreatedBy": "Rutuja",
+      "CreationDate": "03/29/2024",
+      "UpdatedOn": "03/30/2024",
+      "UpdatedBy": "Mahira"
     }
 ]

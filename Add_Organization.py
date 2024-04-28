@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 import psycopg2
+import json
 
 app = Flask(__name__)
 
@@ -19,16 +20,17 @@ def connect_to_db():
 @app.route('/add_organization', methods=['POST'])
 def add_organization():
     try:
-        # Parse JSON data from the request body
-        data = request.json
+        # Read data from data.json file
+        with open('data.json', 'r') as f:
+            data = json.load(f)
 
         # Extract organization data
-        org_name = data.get('name')
-        org_type = data.get('type')
-        created_by = data.get('created_by')
-        creation_date = data.get('creation_date')
-        updated_on = data.get('updated_on')
-        updated_by = data.get('updated_by')
+        org_name = data.get('Name')
+        org_type = data.get('OrganizationType')
+        created_by = data.get('CreatedBy')
+        creation_date = data.get('CreationDate')
+        updated_on = data.get('UpdatedOn')
+        updated_by = data.get('UpdatedBy')
 
         # Connect to the database
         conn = connect_to_db()
