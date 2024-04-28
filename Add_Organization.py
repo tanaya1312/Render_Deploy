@@ -25,6 +25,7 @@ def add_organization():
             data = json.load(f)
 
         # Extract organization data
+        org_id = data.get('id')
         org_name = data.get('Name')
         org_type = data.get('OrganizationType')
         created_by = data.get('CreatedBy')
@@ -40,9 +41,9 @@ def add_organization():
 
         # Execute the insertion query
         cur.execute("""
-            INSERT INTO Organization (Organization_Name, Organization_Type, Created_by, Creation_Date, Updated_On, Updated_by)
-            VALUES (%s, %s, %s, %s, %s, %s)
-        """, (org_name, org_type, created_by, creation_date, updated_on, updated_by))
+            INSERT INTO Organization (Organization_Id, Organization_Name, Organization_Type, Created_by, Creation_Date, Updated_On, Updated_by)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
+        """, (org_id, org_name, org_type, created_by, creation_date, updated_on, updated_by))
 
         # Commit the transaction
         conn.commit()
